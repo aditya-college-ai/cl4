@@ -1,0 +1,26 @@
+from collections import defaultdict
+
+# Simulate Map function
+def mapper(line):
+    words = line.strip().lower().split()
+    return [(word.strip('.,'), 1) for word in words]
+
+# Simulate Reduce function
+def reducer(mapped_data):
+    word_count = defaultdict(int)
+    for word, count in mapped_data:
+        word_count[word] += count
+    return word_count
+
+# Read file and process lines
+mapped_results = []
+with open('word-freq.txt', 'r') as file:
+    for line in file:
+        mapped_results.extend(mapper(line))
+
+# Apply reduce
+reduced_output = reducer(mapped_results)
+
+# Print sorted word frequencies
+for word in sorted(reduced_output):
+    print(f"{word}: {reduced_output[word]}")
