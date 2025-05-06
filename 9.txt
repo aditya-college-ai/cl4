@@ -1,0 +1,58 @@
+// 1. CREATE – insert a new document
+db.users.insertOne({
+  name: "Alice",
+  email: "alice@example.com",
+  age: 28,
+  roles: ["editor", "subscriber"]
+});
+
+// you can also insert many at once:
+db.users.insertMany([
+  { name: "Bob",   email: "bob@example.com",   age: 35, roles: ["admin"] },
+  { name: "Carol", email: "carol@example.com", age: 22, roles: ["subscriber"] }
+]);
+
+// 2. READ – query documents
+// find all users
+db.users.find();
+
+// find users with age > 25
+db.users.find({ age: { $gt: 25 } });
+
+// find one by email
+db.users.findOne({ email: "alice@example.com" });
+
+// project only name and email fields
+db.users.find({}, { name: 1, email: 1, _id: 0 });
+
+// 3. UPDATE – modify existing documents
+// update one document (set a new field, increment age)
+db.users.updateOne(
+  { name: "Alice" },                   // filter
+  { 
+    $set:   { status: "active" },      // add/overwrite fields
+    $inc:   { age: 1 }                 // increment numeric fields
+  }
+);
+
+// update many (add a role to every subscriber)
+db.users.updateMany(
+  { roles: "subscriber" },
+  { $addToSet: { roles: "newsletter" } }
+);
+
+// replace a whole document
+db.users.replaceOne(
+  { email: "bob@example.com" },
+  { name: "Robert", email: "bob@example.com", age: 36, roles: ["admin", "editor"] }
+);
+
+// 4. DELETE – remove documents
+// delete one
+db.users.deleteOne({ name: "Carol" });
+
+// delete many (remove all subscribers)
+db.users.deleteMany({ roles: "subscriber" });
+
+// drop the entire collection
+db.users.drop();
