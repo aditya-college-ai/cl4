@@ -1,0 +1,19 @@
+from mrjob.job import MRJob
+import csv
+
+class GenderCasualtyAnalysis(MRJob):
+
+    def mapper(self, _, line):
+        row = next(csv.reader([line]))
+        if row[0] == "PassengerId":  # skip header
+            return
+        survived = row[1]
+        gender = row[5]
+        if survived == '0':
+            yield gender.lower(), 1
+
+    def reducer(self, gender, counts):
+        yield gender, sum(counts)
+
+if __name__ == '__main__':
+    GenderCasualtyAnalysis.run()
