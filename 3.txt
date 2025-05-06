@@ -4,7 +4,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 # Step 1: Load the dataset
-df = pd.read_csv('/content/iris_dataset.csv')
+df = pd.read_csv('iris_dataset.csv')
 
 # Step 2: Prepare features and target
 X = df[['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']]
